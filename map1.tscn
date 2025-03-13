@@ -1,6 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://5shhn28xglql"]
+[gd_scene load_steps=9 format=3 uid="uid://5shhn28xglql"]
 
 [ext_resource type="PackedScene" uid="uid://c1biw3e8goxkw" path="res://player.tscn" id="1_jei5x"]
+[ext_resource type="Texture2D" uid="uid://dnyho5w8yx6eb" path="res://Assets/download__4_-removebg-preview.png" id="2_7bc4t"]
+[ext_resource type="Script" path="res://crosshair.gd" id="3_rt1bc"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_seai2"]
 albedo_color = Color(0.349382, 0.202518, 0.00424046, 0)
@@ -51,3 +53,19 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13.0768, 0)
 light_energy = 16.0
 light_size = 1.0
 omni_range = 48.0617
+
+[node name="Crosshair" type="TextureRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -393.0
+offset_top = -214.0
+offset_right = -357.0
+offset_bottom = -175.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_7bc4t")
+expand_mode = 1
+script = ExtResource("3_rt1bc")
