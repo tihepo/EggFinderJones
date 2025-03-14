@@ -19,11 +19,9 @@ func _ready():
 
 func _input(event):
 	if event is InputEventMouseMotion:
-	rotation_yaw -= event.relative.x * mouse_sensitivity
-	rotation_pitch -= event.relative.y * mouse_sensitivity
-	rotation_pitch = clamp(rotation_pitch, deg_to_rad(-89), deg_to_rad(89))  # Prevent camera flip
-
-
+		rotation_yaw -= event.relative.x * mouse_sensitivity
+		rotation_pitch -= event.relative.y * mouse_sensitivity
+		rotation_pitch = clamp(rotation_pitch, deg_to_rad(-89), deg_to_rad(89))  # Prevent camera flip
 
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		shoot()
@@ -53,8 +51,8 @@ func _physics_process(delta):
 		velocity.y = jump_force
 
 	# ✅ Apply recoil force directly to velocity
-	velocity += recoil_force
-	recoil_force *= 0.85  # Slowly reduce recoil effect
+	velocity -= recoil_force
+	recoil_force *= 0.85 * delta # Slowly reduce recoil effect
 
 	move_and_slide()  # Move the player
 
@@ -78,4 +76,4 @@ func shoot():
 	apply_recoil()
 
 func apply_recoil():
-	recoil_force = -global_transform.basis.z * -50.0  # Recoil pushes backward
+	recoil_force = -camera.global_transform.basis.z * 5.0  # Recoil pushes backward

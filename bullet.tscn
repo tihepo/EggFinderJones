@@ -1,12 +1,14 @@
 [gd_scene load_steps=4 format=3 uid="uid://ct3gtsndrcg4d"]
 
-[ext_resource type="Script" uid="uid://bry8mp8fb6dwb" path="res://bullet.gd" id="1_cgugy"]
+[ext_resource type="Script" path="res://bullet.gd" id="1_cgugy"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_plfbj"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_s55os"]
 
 [node name="Bullet" type="RigidBody3D"]
+collision_layer = 2
+collision_mask = 2
 script = ExtResource("1_cgugy")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
