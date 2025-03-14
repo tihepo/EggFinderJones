@@ -4,15 +4,15 @@ extends CharacterBody3D
 @export var jump_force: float = 4.5
 @export var gravity: float = 9.8
 @export var mouse_sensitivity: float = 0.005
-@export var bullet_tcsn: PackedScene  # Assign Bullet.tscn in the inspector
+@export var bullet_tscn: PackedScene  # Assign Bullet.tscn in the inspector
 
 @onready var camera_pivot = $CameraPivot
 @onready var camera = $CameraPivot/Camera3D  # Reference to the camera
 
 var rotation_yaw: float = 0.0
 var rotation_pitch: float = 0.0
-
 var recoil_force: Vector3 = Vector3.ZERO  # Stores recoil force
+var recoil_decay: float = 0.9  # How fast recoil fades (0-1)
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -41,29 +41,37 @@ func _physics_process(delta):
 	direction.y = 0
 	direction = direction.normalized()
 
+	# Apply movement input
 	velocity.x = direction.x * speed
 	velocity.z = direction.z * speed
 
+	# Apply gravity
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = jump_force
 
-	# ✅ Apply recoil force directly to velocity
-	velocity -= recoil_force
-	recoil_force *= 0.85 * delta # Slowly reduce recoil effect
+	# ✅ Apply recoil properly
+	velocity += recoil_force
+
+	# ✅ Gradually reduce recoil effect
+	recoil_force *= recoil_decay * delta # This prevents a sharp stop
 
 	move_and_slide()  # Move the player
 
 	# Apply rotation to camera
 	rotation.y = rotation_yaw
 	camera_pivot.rotation.x = rotation_pitch
-# Make sure the CameraPivot moves with the player
+
+	# Keep CameraPivot in sync with the player's position
 	camera_pivot.global_transform.origin = global_transform.origin
 
 func shoot():
-	var bullet = bullet_tcsn.instantiate()
+	if not bullet_tscn:
+		return
+	
+	var bullet = bullet_tscn.instantiate()
 	get_parent().add_child(bullet)
 
 	# Set bullet's starting position to the camera's position
@@ -76,4 +84,5 @@ func shoot():
 	apply_recoil()
 
 func apply_recoil():
-	recoil_force = -camera.global_transform.basis.z * 5.0  # Recoil pushes backward
+	var recoil_strength = 10.0  # Increase for a stronger knockback
+	recoil_force = camera.global_transform.basis.z * recoil_strength  # Push opposite to bullet direction
