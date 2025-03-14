@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://c1biw3e8goxkw" path="res://player.tscn" id="1_jei5x"]
 [ext_resource type="Texture2D" uid="uid://dnyho5w8yx6eb" path="res://Assets/download__4_-removebg-preview.png" id="2_7bc4t"]
-[ext_resource type="Script" path="res://crosshair.gd" id="3_rt1bc"]
+[ext_resource type="Script" uid="uid://djwc0uqdbugw8" path="res://crosshair.gd" id="3_rt1bc"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_seai2"]
 albedo_color = Color(0.349382, 0.202518, 0.00424046, 0)
@@ -23,7 +23,6 @@ sky = SubResource("Sky_shffx")
 
 [node name="CSGTorus3D" type="CSGTorus3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0924492, 1.59717, -0.0558815)
-snap = 1e-06
 use_collision = true
 inner_radius = 14.4779
 outer_radius = 10.5406
@@ -43,7 +42,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1.2029, 0.637384)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 
 [node name="Camera3D" type="Camera3D" parent="Player2/CameraPivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.756233, 0.318139)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_njplh")

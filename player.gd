@@ -12,17 +12,18 @@ extends CharacterBody3D
 var rotation_yaw: float = 0.0
 var rotation_pitch: float = 0.0
 
-var knockback_applied: bool = false  # To check if knockback has been applied
-var knockback_vector: Vector3 = Vector3.ZERO  # The knockback force vector
+var recoil_force: Vector3 = Vector3.ZERO  # Stores recoil force
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _input(event):
 	if event is InputEventMouseMotion:
-		rotation_yaw -= event.relative.x * mouse_sensitivity
-		rotation_pitch -= event.relative.y * mouse_sensitivity
-		rotation_pitch = clamp(rotation_pitch, -1.2, 1.2)
+	rotation_yaw -= event.relative.x * mouse_sensitivity
+	rotation_pitch -= event.relative.y * mouse_sensitivity
+	rotation_pitch = clamp(rotation_pitch, deg_to_rad(-89), deg_to_rad(89))  # Prevent camera flip
+
+
 
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		shoot()
@@ -51,35 +52,30 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = jump_force
 
-	# Apply knockback if it's set
-	if knockback_applied:
-		velocity += knockback_vector
-		knockback_applied = false  # Reset knockback after applying it
+	# ✅ Apply recoil force directly to velocity
+	velocity += recoil_force
+	recoil_force *= 0.85  # Slowly reduce recoil effect
 
-	# Move the character (no need to pass velocity directly to move_and_slide)
-	move_and_slide()
+	move_and_slide()  # Move the player
 
-	# Apply the rotation to the player and camera
+	# Apply rotation to camera
 	rotation.y = rotation_yaw
 	camera_pivot.rotation.x = rotation_pitch
+# Make sure the CameraPivot moves with the player
+	camera_pivot.global_transform.origin = global_transform.origin
 
 func shoot():
 	var bullet = bullet_tcsn.instantiate()
 	get_parent().add_child(bullet)
 
-	# Set the bullet's starting position to the camera's position
+	# Set bullet's starting position to the camera's position
 	bullet.global_transform.origin = camera.global_transform.origin
 
-	# Make the bullet move toward the direction where the camera is looking
+	# Make the bullet move in the direction of the camera
 	bullet.linear_velocity = -camera.global_transform.basis.z * bullet.speed
 
-	# Pass the player (shooter) reference to the bullet
-	bullet.shooter = self  # 'self' refers to the player who shot the bullet
+	# ✅ Apply recoil when shooting
+	apply_recoil()
 
-
-# Apply knockback to the shooter (the player who shot the bullet)
-func apply_knockback() -> void:
-	if shooter:
-		# Apply knockback in the opposite direction of the bullet's velocity
-		knockback_vector = -global_transform.basis.z * 50.0  # Adjust knockback strength as needed
-		knockback_applied = true  # Set flag to apply knockback in the next physics frame
+func apply_recoil():
+	recoil_force = -global_transform.basis.z * -50.0  # Recoil pushes backward
