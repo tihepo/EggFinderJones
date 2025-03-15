@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://ct3gtsndrcg4d"]
+
+[ext_resource type="Script" uid="uid://bry8mp8fb6dwb" path="res://bullet.gd" id="1_jbvqc"]
+[ext_resource type="PackedScene" uid="uid://idcyc5y4lvkp" path="res://Assets/Trident.glb" id="2_oaut8"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yyg5r"]
+size = Vector3(0.136597, 1.63068, 0.783447)
+
+[node name="RigidBody3D" type="RigidBody3D"]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_jbvqc")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.224849, -0.233901, 1.34551)
+shape = SubResource("BoxShape3D_yyg5r")
+
+[node name="Trident2" parent="." instance=ExtResource("2_oaut8")]
+transform = Transform3D(0.0266005, 0, 0, 0, -1.16274e-09, -0.0206618, 0, 0.0266005, -9.03158e-10, -0.208229, -0.232204, 1.4989)

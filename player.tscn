@@ -1,13 +1,13 @@
 [gd_scene load_steps=5 format=3 uid="uid://c1biw3e8goxkw"]
 
-[ext_resource type="Script" path="res://player.gd" id="1_jm8k3"]
-[ext_resource type="PackedScene" uid="uid://ct3gtsndrcg4d" path="res://bullet.tscn" id="2_njggh"]
+[ext_resource type="Script" uid="uid://c0hsgn1ib7yrw" path="res://player.gd" id="1_jm8k3"]
+[ext_resource type="PackedScene" uid="uid://ct3gtsndrcg4d" path="res://Assets/bullet.tscn" id="2_njggh"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_p437o"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_ty8ux"]
 
-[node name="CharacterBody3D" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_jm8k3")
 bullet_tscn = ExtResource("2_njggh")
 
@@ -17,3 +17,16 @@ shape = SubResource("CapsuleShape3D_p437o")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
 visible = false
 mesh = SubResource("CapsuleMesh_ty8ux")
+
+[node name="CameraPivot" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot"]
+transform = Transform3D(1, -1.08898e-09, -2.74284e-10, 1.12297e-09, 0.971263, 0.238007, 7.21201e-12, -0.238007, 0.971263, 1.10361e-07, 0.531676, 0.221309)
+
+[node name="Trident" parent="CameraPivot" instance=ExtResource("2_njggh")]
+unique_name_in_owner = true
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0.321058, 0.223112, 0.770998)
+collision_layer = 0
+collision_mask = 0
+sleeping = true
+freeze = true

@@ -68,20 +68,28 @@ func _physics_process(delta):
 	camera_pivot.global_transform.origin = global_transform.origin
 
 func shoot():
-	if not bullet_tscn:
+	if not %Trident:
 		return
 	
-	var bullet = bullet_tscn.instantiate()
+	# Get the PackedScene from %Trident
+	var bullet_tscn = %Trident.scene_file_path
+	var bullet_scene = load(bullet_tscn)
+	if not bullet_scene:
+		return
+	
+	# Instantiate a new bullet
+	var bullet = bullet_scene.instantiate()
 	get_parent().add_child(bullet)
 
-	# Set bullet's starting position to the camera's position
-	bullet.global_transform.origin = camera.global_transform.origin
+	# Set bullet's starting position to %Trident's position
+	bullet.global_transform = %Trident.global_transform
 
 	# Make the bullet move in the direction of the camera
 	bullet.linear_velocity = -camera.global_transform.basis.z * bullet.speed
 
 	# ✅ Apply recoil when shooting
 	apply_recoil()
+
 
 func apply_recoil():
 	var recoil_strength = 10.0  # Increase for a stronger knockback

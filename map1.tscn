@@ -41,12 +41,6 @@ material = SubResource("StandardMaterial3D_5y2qw")
 [node name="Player2" parent="." instance=ExtResource("1_jei5x")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1.2029, 0.637384)
 
-[node name="CameraPivot" type="Node3D" parent="Player2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0.910141)
-
-[node name="Camera3D" type="Camera3D" parent="Player2/CameraPivot"]
-transform = Transform3D(1, 0, 0, 0, 0.968126, 0.250464, 0, -0.250464, 0.968126, 0, 0.425809, 1.48369)
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_njplh")
 
